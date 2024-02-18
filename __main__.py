@@ -52,12 +52,6 @@ class cache_updater:
     def start(self):
         self.rabbitmq_channel.start_consuming()
 
-
-    def decider(self, event):
-        print(f"\tevent:{event}")
-
-
-
     def event(self, event):
         redis_conn=self.redis_conn
         if event['type'] == 'heartbeat':
@@ -68,7 +62,7 @@ class cache_updater:
                 redis_conn.hset(
                     f"moma:{event['symbol']}:{change[0]}",
                     mapping={
-                        "timestamp": event['timestamp'], 
+                        "timestamp": change[0], 
                         "open": change[1],
                         "high": change[2],
                         "low": change[3],
@@ -77,18 +71,6 @@ class cache_updater:
                         }
                     )
 
-        """if 'timestamp' in event:
-            print(f"event_id:{event['eventId']};timestamp:{event['timestamp']}")   
-        else:
-            print(f"event_id:{event['eventId']}")
-
-
-
-        for ev in event['events']:
-            self.decider(
-                event=ev
-                )
-        """
 
     def incoming_events(self, channel, method, properties, body):
         print(body)
