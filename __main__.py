@@ -55,7 +55,7 @@ class cache_updater:
     def event(self, event):
         redis_conn=self.redis_conn
         if event['type'] == 'heartbeat':
-            return 0
+            pass
 
         if event['type'] == 'candles_1m_updates':
             for change in event['changes']:
